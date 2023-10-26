@@ -30,5 +30,4 @@ download_button.pack()
 status_label = tk.Label(window, text="")
 status_label.pack()
 
-
 window.mainloop()
