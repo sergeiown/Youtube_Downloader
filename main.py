@@ -12,7 +12,7 @@ def download_video():
     url = entry.get("1.0", tk.END).strip()
     if not url or not validators.url(url):
         status_label.config(text="Invalid link!")
-        return  # Exit the function if the link is empty or invalid
+        return
 
     download_thread = threading.Thread(
         target=download_video_thread, args=(url,))
@@ -32,9 +32,8 @@ def download_video_thread(url):
     progress_bar.stop()
     progress_bar.pack_forget()
     status_label.config(text="Video downloaded!")
-    clear_entry()  # Clear the field
+    clear_entry()
     update_buttons()
-    # Set a timer to hide the message
     window.after(2000, lambda: status_label.config(text=""))
 
 # Function to paste a link from the clipboard
@@ -43,11 +42,22 @@ def download_video_thread(url):
 def paste_from_clipboard():
     clipboard_data = pyperclip.paste()
     if validators.url(clipboard_data):
-        entry.config(state="normal")  # Enable the field for pasting
-        entry.delete("1.0", tk.END)  # Clear the previous content
+        entry.config(state="normal")
+        entry.delete("1.0", tk.END)
         entry.insert(tk.END, clipboard_data)
-        # Disable the field after pasting
         entry.config(state="disabled")
+        update_buttons()
+    else:
+        status_label.config(text="Invalid link!")
+        window.after(2000, lambda: status_label.config(text=""))
+
+# Function to clear the entry field and handle invalid link logic
+
+
+def clear_entry():
+    entry.config(state="normal")
+    entry.delete("1.0", tk.END)
+    entry.config(state="disabled")
     update_buttons()
 
 # Update the state of buttons and the presence of the "Download" button
@@ -58,19 +68,13 @@ def update_buttons():
     if validators.url(url):
         if not download_button.winfo_ismapped():
             download_button.pack(pady=20)
+        clear_button.pack(pady=5)  # Show the "Clear" button
         paste_button.pack_forget()
     else:
         if download_button.winfo_ismapped():
             download_button.pack_forget()
+        clear_button.pack_forget()  # Hide the "Clear" button
         paste_button.pack(pady=20)
-
-# Clear the entry field
-
-
-def clear_entry():
-    entry.config(state="normal")
-    entry.delete("1.0", tk.END)
-    entry.config(state="disabled")
 
 
 # Create the window
@@ -89,16 +93,21 @@ window.geometry(f"{window_width}x{window_height}")
 # Label for entering the link
 label = tk.Label(
     window, text="Paste a link to a YouTube video:", font=("Helvetica", 16))
-label.pack(pady=20)
+label.pack(pady=10)
 
 # Entry field for entering the link
 entry = tk.Text(window, height=1, width=40, state="disabled")
-entry.pack(padx=20, pady=5)
+entry.pack(padx=10, pady=2)
 
 # Button to download
 download_button = tk.Button(
     window, text="Download", command=download_video)
 download_button.pack_forget()
+
+# Button to clear the entry field
+clear_button = tk.Button(
+    window, text="Clear", command=clear_entry)
+clear_button.pack(pady=2)  # Adjust the padding as needed
 
 # Label for the status
 status_label = tk.Label(window, text="")
