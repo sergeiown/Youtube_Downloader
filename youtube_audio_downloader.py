@@ -191,9 +191,9 @@ window.resizable(False, False)
 screen_width = window.winfo_screenwidth()
 screen_height = window.winfo_screenheight()
 
-# Set the window size to 25% of the screen width and 35% height
-window_width = int(screen_width * 0.25)
-window_height = int(screen_height * 0.35)
+# Set the window size to 30% of the screen width and 50% height
+window_width = int(screen_width * 0.30)
+window_height = int(screen_height * 0.50)
 window.geometry(f"{window_width}x{window_height}")
 
 # Label for choosing audio bitrate
