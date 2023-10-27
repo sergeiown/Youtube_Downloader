@@ -39,18 +39,17 @@ def download_video_thread(url, quality):
     yt = YouTube(url)
 
     try:
-        if quality == "High Quality":
+        if quality == "Highest quality":
             stream = yt.streams.get_highest_resolution()
-        elif quality == "Medium Quality":
+        elif quality == "720p quality":
             stream = yt.streams.filter(res="720p").first()
-        elif quality == "Low Quality":
+        elif quality == "360p quality":
             stream = yt.streams.filter(res="360p").first()
 
         status_label.config(text="Downloading in progress...")
         progress_bar.start()
         filename = get_valid_filename(yt.title)
-        filetypes = [("Video Files", (".mp4", ".avi", ".mkv")),
-                     ("All Files", "*.*")]
+        filetypes = [("Video Files", (".mp4", ".avi", ".mkv"))]
         save_path = filedialog.asksaveasfilename(
             defaultextension=".mp4", initialfile=filename, filetypes=filetypes)
         if save_path:
