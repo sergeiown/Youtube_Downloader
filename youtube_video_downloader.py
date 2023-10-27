@@ -92,11 +92,15 @@ def download_video_thread(url, quality):
 def paste_from_clipboard():
     clipboard_data = pyperclip.paste()
     if validators.url(clipboard_data):
-        entry.config(state="normal")
-        entry.delete("1.0", tk.END)
-        entry.insert(tk.END, clipboard_data)
-        entry.config(state="disabled")
-        update_buttons()
+        if "youtube" in clipboard_data:  # Check if the link contains "youtube"
+            entry.config(state="normal")
+            entry.delete("1.0", tk.END)
+            entry.insert(tk.END, clipboard_data)
+            entry.config(state="disabled")
+            update_buttons()
+        else:
+            status_label.config(text="Invalid link (not a YouTube link)!")
+            window.after(2000, lambda: status_label.config(text=""))
     else:
         status_label.config(text="Invalid link!")
         window.after(2000, lambda: status_label.config(text=""))

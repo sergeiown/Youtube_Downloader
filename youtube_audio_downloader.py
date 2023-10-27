@@ -113,17 +113,22 @@ def download_mp3_thread(url, bitrate):
 def paste_from_clipboard():
     clipboard_data = pyperclip.paste()
     if validators.url(clipboard_data):
-        entry.config(state="normal")
-        entry.delete("1.0", tk.END)
-        entry.insert(tk.END, clipboard_data)
-        entry.config(state="disabled")
-        # Оновлюємо список доступних бітрейтів
-        update_bitrate_list(clipboard_data)
-        update_bitrate_combobox()  # Оновлюємо Combobox із бітрейтами
-        update_buttons()
+        if "youtube" in clipboard_data:  # Check if the link contains "youtube"
+            entry.config(state="normal")
+            entry.delete("1.0", tk.END)
+            entry.insert(tk.END, clipboard_data)
+            entry.config(state="disabled")
+            # Update the list of available bitrates
+            update_bitrate_list(clipboard_data)
+            update_bitrate_combobox()  # Update the Combobox with bitrates
+            update_buttons()
+        else:
+            status_label.config(text="Invalid link (not a YouTube link)!")
+            window.after(2000, lambda: status_label.config(text=""))
     else:
         status_label.config(text="Invalid link!")
         window.after(2000, lambda: status_label.config(text=""))
+
 
 # Function to clear the entry field and handle invalid link logic
 
