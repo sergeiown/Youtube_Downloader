@@ -46,6 +46,7 @@ def download_video_thread(url, quality):
         elif quality == "360p quality":
             stream = yt.streams.filter(res="360p").first()
 
+        download_button.config(state="disabled")
         status_label.config(text="Downloading in progress...")
         progress_bar.start()
         filename = get_valid_filename(yt.title)
@@ -61,6 +62,7 @@ def download_video_thread(url, quality):
             clear_entry()
             update_buttons()
             window.after(2000, lambda: status_label.config(text=""))
+            download_button.config(state="normal")
     except Exception as e:
         error_label.config(text=str(e))
         window.after(5000, lambda: error_label.config(text=""))
@@ -133,6 +135,7 @@ def update_buttons():
 window = tk.Tk()
 window.title("YouTube Downloader")
 window.iconbitmap("youtube_downloader.ico")
+window.resizable(False, False)
 
 # Get the screen width and height
 screen_width = window.winfo_screenwidth()
