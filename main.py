@@ -149,7 +149,7 @@ quality_label = tk.Label(
 quality_label.pack(pady=10)
 
 # Options for video quality
-quality_options = ["High Quality", "Medium Quality", "Low Quality"]
+quality_options = ["Highest quality", "720p quality", "360p quality"]
 
 # Combobox for selecting video quality
 quality_var = tk.StringVar()
@@ -196,5 +196,12 @@ update_buttons()
 
 # Bind a function to window resize event to update the max width for error messages
 window.bind("<Configure>", lambda event: set_max_error_label_width())
+
+# Get the center coordinates for the window
+x = (screen_width - window_width) // 2
+y = (screen_height - window_height) // 2
+
+# Set the window position
+window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
 window.mainloop()
