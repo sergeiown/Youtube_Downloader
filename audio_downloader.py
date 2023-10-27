@@ -1,5 +1,5 @@
 """
-Program Name: Youtube Downloader
+Program Name: YouTube MP3 Downloader
 Version: 1.0
 Developer: Serhii I. Myshko
 """
@@ -11,28 +11,29 @@ import validators
 import pyperclip
 import threading
 import os
+import subprocess
 
 # Create a global variable to track the current progress bar
 current_progress_bar = None
 
-# Function to download the video
+# Function to download the audio as mp3
 
 
-def download_video():
+def download_mp3():
     url = entry.get("1.0", tk.END).strip()
     if not url or not validators.url(url):
         status_label.config(text="Invalid link!")
         return
 
-    selected_quality = quality_var.get()
+    selected_bitrate = bitrate_var.get()
     download_thread = threading.Thread(
-        target=download_video_thread, args=(url, selected_quality))
+        target=download_mp3_thread, args=(url, selected_bitrate))
     download_thread.start()
 
-# Function to download the video in a separate thread
+# Function to download the audio as mp3 in a separate thread
 
 
-def download_video_thread(url, quality):
+def download_mp3_thread(url, bitrate):
     global current_progress_bar
     # Check if a progress bar is already displayed and remove it
     if current_progress_bar:
@@ -45,30 +46,29 @@ def download_video_thread(url, quality):
     yt = YouTube(url)
 
     try:
-        if quality == "Highest quality":
-            stream = yt.streams.get_highest_resolution()
-        elif quality == "720p quality":
-            stream = yt.streams.filter(res="720p").first()
-        elif quality == "360p quality":
-            stream = yt.streams.filter(res="360p").first()
+        streams = yt.streams.filter(only_audio=True, abr=bitrate + 'kbps')
+        if not streams:
+            status_label.config(text="Selected bitrate not available!")
+            return
 
         download_button.config(state="disabled")
         status_label.config(text="Downloading in progress...")
         progress_bar.start()
-        filename = get_valid_filename(yt.title)
-        filetypes = [
-            ("MP4 files", "*.mp4"),
-            ("AVI files", "*.avi"),
-            ("MKV files", "*.mkv")
-        ]
+        audio_stream = streams.first()
+        filename = get_valid_filename(yt.title) + f'_{bitrate}kbps.mp3'
+        filetypes = [("MP3 files", "*.mp3")]
         save_path = filedialog.asksaveasfilename(
-            defaultextension=".mp4", initialfile=filename, filetypes=filetypes)
+            defaultextension=".mp3", initialfile=filename, filetypes=filetypes)
         if save_path:
-            stream.download(output_path=os.path.dirname(
+            audio_stream.download(output_path=os.path.dirname(
                 save_path), filename=os.path.basename(save_path))
+            mp4_filename = os.path.join(os.path.dirname(
+                save_path), os.path.basename(save_path))
+            mp3_filename = os.path.splitext(mp4_filename)[0] + ".mp3"
+            convert_to_mp3(mp4_filename, mp3_filename)
             progress_bar.stop()
             progress_bar.pack_forget()
-            status_label.config(text="Video downloaded!")
+            status_label.config(text="Audio downloaded as MP3!")
             clear_entry()
             update_buttons()
             window.after(2000, lambda: status_label.config(text=""))
@@ -81,7 +81,7 @@ def download_video_thread(url, quality):
         error_label.config(text=str(e))
         window.after(5000, lambda: error_label.config(text=""))
     finally:
-        if 'stream' in locals():
+        if 'audio_stream' in locals():
             progress_bar.pack_forget()
 
 # Function to paste a link from the clipboard
@@ -122,6 +122,13 @@ def get_valid_filename(s):
     s = str(s).strip().replace(" ", "_")
     return "".join(c for c in s if c.isalnum() or c in ('_', '.', '-'))
 
+# Function to convert downloaded mp4 to mp3
+
+
+def convert_to_mp3(input_file, output_file):
+    cmd = f'ffmpeg -i "{input_file}" -q:a 0 -map a "{output_file}"'
+    subprocess.call(cmd, shell=True)
+
 # Update the state of buttons and the presence of the "Download" button
 
 
@@ -147,7 +154,7 @@ def update_buttons():
 
 # Create the window
 window = tk.Tk()
-window.title("YouTube Downloader")
+window.title("YouTube MP3 Downloader")
 window.iconbitmap(default="youtube_downloader.ico")
 window.resizable(False, False)
 
@@ -160,20 +167,20 @@ window_width = int(screen_width * 0.25)
 window_height = int(screen_height * 0.35)
 window.geometry(f"{window_width}x{window_height}")
 
-# Label for choosing video quality
-quality_label = tk.Label(
-    window, text="Choose video quality:", font=("Helvetica", 16))
-quality_label.pack(pady=10)
+# Label for choosing audio bitrate
+bitrate_label = tk.Label(
+    window, text="Choose audio bitrate (kbps):", font=("Helvetica", 16))
+bitrate_label.pack(pady=10)
 
-# Options for video quality
-quality_options = ["Highest quality", "720p quality", "360p quality"]
+# Options for audio bitrate
+bitrate_options = ["128", "160", "256", "320"]
 
-# Combobox for selecting video quality
-quality_var = tk.StringVar()
-quality_var.set(quality_options[0])
-quality_combobox = ttk.Combobox(
-    window, textvariable=quality_var, values=quality_options, width=25)
-quality_combobox.pack()
+# Combobox for selecting audio bitrate
+bitrate_var = tk.StringVar()
+bitrate_var.set(bitrate_options[0])
+bitrate_combobox = ttk.Combobox(
+    window, textvariable=bitrate_var, values=bitrate_options, width=25)
+bitrate_combobox.pack()
 
 # Label for entering the link
 label = tk.Label(
@@ -186,7 +193,7 @@ entry.pack(padx=10, pady=2)
 
 # Button to download
 download_button = tk.Button(
-    window, text="Download", command=download_video, width=25)
+    window, text="Download as MP3", command=download_mp3, width=25)
 download_button.pack_forget()
 
 # Button to clear the entry field
