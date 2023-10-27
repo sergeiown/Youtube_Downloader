@@ -23,18 +23,25 @@ def download_video():
 
 def download_video_thread(url):
     progress_bar = ttk.Progressbar(window, mode="indeterminate", length=400)
-    progress_bar.pack(pady=20)
+    progress_bar.pack(pady=15)
     yt = YouTube(url)
-    stream = yt.streams.get_highest_resolution()
-    status_label.config(text="Downloading in progress...")
-    progress_bar.start()
-    stream.download()
-    progress_bar.stop()
-    progress_bar.pack_forget()
-    status_label.config(text="Video downloaded!")
-    clear_entry()
-    update_buttons()
-    window.after(2000, lambda: status_label.config(text=""))
+
+    try:
+        stream = yt.streams.get_highest_resolution()
+        status_label.config(text="Downloading in progress...")
+        progress_bar.start()
+        stream.download()
+        progress_bar.stop()
+        progress_bar.pack_forget()
+        status_label.config(text="Video downloaded!")
+        clear_entry()
+        update_buttons()
+        window.after(2000, lambda: status_label.config(text=""))
+    except Exception as e:
+        error_label.config(text=str(e))
+        window.after(5000, lambda: error_label.config(text=""))
+    finally:
+        progress_bar.pack_forget()
 
 # Function to paste a link from the clipboard
 
@@ -60,6 +67,13 @@ def clear_entry():
     entry.config(state="disabled")
     update_buttons()
 
+# Function to set the maximum width for error messages and wrap text if needed
+
+
+def set_max_error_label_width():
+    max_width = window.winfo_width() - window.winfo_width() // 20
+    error_label.config(wraplength=max_width)
+
 # Update the state of buttons and the presence of the "Download" button
 
 
@@ -67,14 +81,17 @@ def update_buttons():
     url = entry.get("1.0", tk.END).strip()
     if validators.url(url):
         if not download_button.winfo_ismapped():
-            download_button.pack(pady=20)
+            download_button.pack(pady=15)
         clear_button.pack(pady=5)  # Show the "Clear" button
         paste_button.pack_forget()
     else:
         if download_button.winfo_ismapped():
             download_button.pack_forget()
         clear_button.pack_forget()  # Hide the "Clear" button
-        paste_button.pack(pady=20)
+        paste_button.pack(pady=15)
+
+    # Set the maximum width for error messages and wrap text
+    set_max_error_label_width()
 
 
 # Create the window
@@ -113,6 +130,11 @@ clear_button.pack(pady=2)  # Adjust the padding as needed
 status_label = tk.Label(window, text="")
 status_label.pack()
 
+# Label for error messages
+error_label = tk.Label(window, text="", fg="red",
+                       wraplength=window_width - window_width // 20)
+error_label.pack()
+
 # Button to paste a link from the clipboard
 paste_button = tk.Button(
     window, text="Paste from clipboard", command=paste_from_clipboard)
@@ -120,5 +142,8 @@ paste_button.pack(pady=20)
 
 # Update the state of buttons and the presence of the "Download" button at the beginning
 update_buttons()
+
+# Bind a function to window resize event to update the max width for error messages
+window.bind("<Configure>", lambda event: set_max_error_label_width())
 
 window.mainloop()
