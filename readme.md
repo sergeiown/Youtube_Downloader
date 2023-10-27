@@ -1,4 +1,4 @@
-# YouTube Video Downloader with Python and tkinter
+# YouTube Video and Audio Downloader with Python and tkinter
 
 This project is a simple tool for downloading videos from YouTube using Python and the tkinter library for the user interface.
 
