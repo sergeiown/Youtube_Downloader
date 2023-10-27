@@ -63,6 +63,10 @@ def download_video_thread(url, quality):
             update_buttons()
             window.after(2000, lambda: status_label.config(text=""))
             download_button.config(state="normal")
+        else:
+            status_label.config(text="")
+            download_button.config(state="normal")
+            clear_entry()
     except Exception as e:
         error_label.config(text=str(e))
         window.after(5000, lambda: error_label.config(text=""))
