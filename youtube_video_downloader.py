@@ -147,7 +147,7 @@ def update_buttons():
 
 # Create the window
 window = tk.Tk()
-window.title("YouTube Downloader")
+window.title("YouTube Video Downloader")
 window.iconbitmap(default="youtube_downloader.ico")
 window.resizable(False, False)
 

@@ -11,7 +11,6 @@ import validators
 import pyperclip
 import threading
 import os
-from moviepy.editor import *
 import re
 
 # Create a global variable to track the current progress bar
@@ -183,7 +182,7 @@ def update_buttons():
 
 # Create the window
 window = tk.Tk()
-window.title("YouTube MP3 Downloader")
+window.title("YouTube Audio Downloader")
 window.iconbitmap(default="youtube_downloader.ico")
 window.resizable(False, False)
 
