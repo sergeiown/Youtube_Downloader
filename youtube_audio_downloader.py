@@ -12,6 +12,7 @@ import validators
 import pyperclip
 import threading
 import os
+import webbrowser
 import re
 
 # Create a global variable to track the current progress bar
@@ -141,7 +142,7 @@ def update_bitrate_combobox():
     if available_bitrates:
         bitrate_var.set(available_bitrates[0])
     else:
-        # Захищене значення за замовчуванням, якщо список порожній
+        # Protected default value if the list is empty
         bitrate_var.set("")
 
 # Function to set the maximum width for error messages and wrap text if needed
@@ -179,6 +180,13 @@ def update_buttons():
         paste_button.pack(pady=15)
 
     set_max_error_label_width()
+
+# Function to open the GitHub repository's license URL
+
+
+def open_license_url(event):
+    webbrowser.open_new(
+        "https://github.com/sergeiown/Youtube_Downloader/blob/main/LICENSE")
 
 
 # Create the window
@@ -256,5 +264,15 @@ y = (screen_height - window_height) // 2
 
 # Set the window position
 window.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+# Add a label for the Copyright information at the bottom
+copyright_label = tk.Label(
+    window, text="Copyright (c) 2023 Serhii I. Myshko", font=("Helvetica", 10), fg="gray", anchor="e")
+copyright_label.pack(side="bottom", pady=3, fill="x")
+copyright_label.bind("<Button-1>", open_license_url)
+
+# Add a line beneath the text
+line_frame = tk.Frame(window, height=1, background="lightgray")
+line_frame.pack(side="bottom", fill="x")
 
 window.mainloop()
