@@ -2,11 +2,11 @@
 
 This project is a simple tool for downloading video and audio content from YouTube using Python and the tkinter library for the user interface.
 
-![image](https://github.com/sergeiown/Youtube_Downloader/assets/112722061/6bdc5e18-e17b-449b-b634-f3b81048f919)
-
 ## How to Use
 
-* Use the installer available in the latest [release](https://github.com/sergeiown/Youtube_Downloader/releases)
+![image](https://github.com/sergeiown/Youtube_Downloader/assets/112722061/6bdc5e18-e17b-449b-b634-f3b81048f919)
+
+* Use the installer available in the latest **[release](https://github.com/sergeiown/Youtube_Downloader/releases)**
 
 * Use the corresponding button to paste a link to a YouTube video from the clipboard.
 
@@ -15,6 +15,8 @@ This project is a simple tool for downloading video and audio content from YouTu
 * Click the "Download" button to initiate the video or audio download.
 
 * Choose the location to save the video or audio and specify a filename if necessary.
+
+![image](https://github.com/sergeiown/Youtube_Downloader/assets/112722061/39494a68-4a4e-46c5-84b3-00e76e3b6f48)
 
 ## Features
 
