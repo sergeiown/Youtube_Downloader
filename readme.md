@@ -22,8 +22,6 @@ This project is a simple tool for downloading videos from YouTube using Python a
 
 * Choose the location to save the video and specify a filename.
 
-* Click the "Save" button to save the video to your computer.
-
 ## Features
 
 * The program supports selecting the video quality (highest quality, 720p, 360p).
