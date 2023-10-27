@@ -1,9 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, filedialog
 from pytube import YouTube
 import validators
 import pyperclip
 import threading
+import os
 
 # Function to download the video
 
@@ -30,13 +31,18 @@ def download_video_thread(url):
         stream = yt.streams.get_highest_resolution()
         status_label.config(text="Downloading in progress...")
         progress_bar.start()
-        stream.download()
-        progress_bar.stop()
-        progress_bar.pack_forget()
-        status_label.config(text="Video downloaded!")
-        clear_entry()
-        update_buttons()
-        window.after(2000, lambda: status_label.config(text=""))
+        filename = get_valid_filename(yt.title)
+        save_path = filedialog.asksaveasfilename(
+            defaultextension=".mp4", initialfile=filename)
+        if save_path:
+            stream.download(output_path=os.path.dirname(
+                save_path), filename=os.path.basename(save_path))
+            progress_bar.stop()
+            progress_bar.pack_forget()
+            status_label.config(text="Video downloaded!")
+            clear_entry()
+            update_buttons()
+            window.after(2000, lambda: status_label.config(text=""))
     except Exception as e:
         error_label.config(text=str(e))
         window.after(5000, lambda: error_label.config(text=""))
@@ -73,6 +79,13 @@ def clear_entry():
 def set_max_error_label_width():
     max_width = window.winfo_width() - window.winfo_width() // 20
     error_label.config(wraplength=max_width)
+
+# Function to sanitize a filename by removing invalid characters
+
+
+def get_valid_filename(s):
+    s = str(s).strip().replace(" ", "_")
+    return "".join(c for c in s if c.isalnum() or c in ('_', '.', '-'))
 
 # Update the state of buttons and the presence of the "Download" button
 
@@ -138,7 +151,7 @@ error_label.pack()
 # Button to paste a link from the clipboard
 paste_button = tk.Button(
     window, text="Paste from clipboard", command=paste_from_clipboard)
-paste_button.pack(pady=20)
+paste_button.pack(pady=15)
 
 # Update the state of buttons and the presence of the "Download" button at the beginning
 update_buttons()
