@@ -2,6 +2,8 @@
 
 This project is a simple tool for downloading videos from YouTube using Python and the tkinter library for the user interface.
 
+![image](https://github.com/sergeiown/Youtube_Downloader/assets/112722061/6bdc5e18-e17b-449b-b634-f3b81048f919)
+
 ## How to Use
 
 * Install the required libraries using `pip`:
