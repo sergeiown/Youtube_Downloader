@@ -131,7 +131,8 @@ def update_buttons():
 
 # Create the window
 window = tk.Tk()
-window.title("Download Video from YouTube")
+window.title("YouTube Downloader")
+window.iconbitmap("youtube_downloader.ico")
 
 # Get the screen width and height
 screen_width = window.winfo_screenwidth()
