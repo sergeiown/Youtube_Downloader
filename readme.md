@@ -8,9 +8,9 @@ This project is a simple tool for downloading video and audio content from YouTu
 
 * Use the installer available in the latest **[release](https://github.com/sergeiown/Youtube_Downloader/releases)**
 
-* Use the corresponding button to paste a link to a YouTube video from the clipboard.
+* Use the corresponding button to paste a link to a YouTube video from the clipboard. Link validation is implemented.
 
-* Select the desired video quality and format from the "Choose video quality" dropdown. Or select bitrate for audio.
+* Select the desired video quality and format from the "Choose video quality" dropdown. Or choose the bitrate for the audio using the drop-down list that is automatically generated from YouTube data.
 
 * Click the "Download" button to initiate the video or audio download.
 
