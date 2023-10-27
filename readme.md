@@ -4,7 +4,7 @@ This project is a simple tool for downloading video and audio content from YouTu
 
 ## How to Use
 
-![image](https://github.com/sergeiown/Youtube_Downloader/assets/112722061/6bdc5e18-e17b-449b-b634-f3b81048f919)
+![image](https://github.com/sergeiown/Youtube_Downloader/assets/112722061/612a3be1-f45e-4a4f-af76-0aa748b1e646)
 
 * Use the installer available in the latest **[release](https://github.com/sergeiown/Youtube_Downloader/releases)**
 
