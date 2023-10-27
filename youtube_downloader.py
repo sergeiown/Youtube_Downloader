@@ -50,7 +50,11 @@ def download_video_thread(url, quality):
         status_label.config(text="Downloading in progress...")
         progress_bar.start()
         filename = get_valid_filename(yt.title)
-        filetypes = [("Video Files", (".mp4", ".avi", ".mkv"))]
+        filetypes = [
+            ("MP4 files", "*.mp4"),
+            ("AVI files", "*.avi"),
+            ("MKV files", "*.mkv")
+        ]
         save_path = filedialog.asksaveasfilename(
             defaultextension=".mp4", initialfile=filename, filetypes=filetypes)
         if save_path:
