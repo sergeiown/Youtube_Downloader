@@ -1,3 +1,9 @@
+"""
+Program Name: Youtube Downloader
+Version: 1.0
+Developer: Serhii I. Myshko
+"""
+
 import tkinter as tk
 from tkinter import ttk, filedialog
 from pytube import YouTube
