@@ -2,6 +2,7 @@
 Program Name: Youtube Downloader
 Version: 1.0
 Developer: Serhii I. Myshko
+License: https://github.com/sergeiown/Youtube_Downloader/blob/main/LICENSE
 """
 
 import tkinter as tk
