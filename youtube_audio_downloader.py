@@ -211,7 +211,7 @@ window.geometry(f"{window_width}x{window_height}")
 
 # Label for choosing audio bitrate
 bitrate_label = tk.Label(
-    window, text="Choose audio bitrate (kbps):", font=("Helvetica", 16))
+    window, text="Choose audio quality:", font=("Helvetica", 16))
 bitrate_label.pack(pady=10)
 
 # Options for audio bitrate
@@ -272,11 +272,11 @@ window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
 # Add a label for the Copyright information at the bottom
 copyright_label = tk.Label(
-    window, text="Copyright (c) 2023 Serhii I. Myshko", font=("Helvetica", 10), fg="gray", anchor="e")
-copyright_label.pack(side="bottom", pady=3, fill="x")
+    window, text="Copyright (c) 2023 Serhii I. Myshko", font=("Calibri", 10), fg="gray", anchor="e")
+copyright_label.pack(side="bottom", pady=2, fill="x")
 copyright_label.bind("<Button-1>", open_license_url)
 
-# Add a line beneath the text
+# Add a line
 line_frame = tk.Frame(window, height=1, background="lightgray")
 line_frame.pack(side="bottom", fill="x")
 
